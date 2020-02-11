@@ -1,0 +1,51 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    kots.io/kotsadm: "true"
+    app: kotsadm
+  name: kotsadm-service-monitor
+spec:
+  endpoints:
+  - port: http
+    interval: 30s
+    scheme: http
+    path: /metrics
+  selector:
+    matchLabels:
+      app: kotsadm
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    kots.io/kotsadm: "true"
+    app: kotsadm-operator
+  name: kotsadm-operator-service-monitor
+spec:
+  endpoints:
+  - port: http
+    interval: 30s
+    scheme: http
+    path: /metrics
+  selector:
+    matchLabels:
+      app: kotsadm-operator
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    kots.io/kotsadm: "true"
+    app: kotsadm-api
+  name: kotsadm-api-service-monitor
+spec:
+  endpoints:
+  - port: http
+    interval: 30s
+    scheme: http
+    path: /metricz
+  selector:
+    matchLabels:
+      app: kotsadm-api

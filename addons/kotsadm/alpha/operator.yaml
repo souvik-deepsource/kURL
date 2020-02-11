@@ -53,7 +53,7 @@ spec:
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "3000"
-        prometheus.io/path: "/metricz"
+        prometheus.io/path: "/metrics"
     spec:
       securityContext:
         runAsUser: 1001
@@ -62,6 +62,9 @@ spec:
       containers:
       - image: kotsadm/kotsadm-operator:alpha
         name: kotsadm-operator
+        ports:
+        - name: http
+          containerPort: 3000
         env:
         - name: KOTSADM_API_ENDPOINT
           value: http://kotsadm-api-node:3000
