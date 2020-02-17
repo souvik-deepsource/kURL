@@ -44,7 +44,7 @@ type Kubernetes struct {
 	BootstrapTokenTTL             string `json:"bootstrapTokenTTL,omitempty"`
 	HACluster                     bool   `json:"HACluster,omitempty"`
 	LoadBalancerAddress           string `json:"loadBalancerAddress,omitempty"`
-	KubernetesMasterAddress       string `json:"kubernetesMasterAddress,omitempty"`
+	MasterAddress       string `json:"MasterAddress,omitempty"`
 	ApiServiceAddress             string `json:"apiServiceAddress,omitempty"`
 	KubeadmTokenCAHash            string `json:"kubeadmTokenCAHash,omitempty"`
 	ControlPlane                  bool   `json:"controlPlane,omitempty"`
@@ -64,7 +64,7 @@ type Docker struct {
 
 type Weave struct {
 	Version        string `json:"version"`
-	EncryptNetwork string   `json:"encryptNetwork,omitempty"`
+	isEncryptionDisabled bool   `json:"isEncryptionDisabled,omitempty"`
 	IPAllocRange   string `json:"IPAllocRange,omitempty"`
 	PodCIDR        string `json:"podCIDR,omitempty"`
 	PodCIDRRange        string `json:"podCIDRRange,omitempty"`
@@ -76,8 +76,8 @@ type Contour struct {
 
 type Rook struct {
 	Version          string `json:"version"`
-	StorageClass     string `json:"storageClass,omitempty"`
-	CephPoolReplicas int    `json:"cephPoolReplicas,omitempty"`
+	StorageClassName     string `json:"storageClassName,omitempty"`
+	CephRplicaCount int    `json:"cephReplicaCount,omitempty"`
 }
 
 type Registry struct {
@@ -90,36 +90,35 @@ type Prometheus struct {
 }
 type Fluentd struct {
 	Version  string `json:"version"`
-	EfkStack bool   `json:"efkStack,omitempty"`
+	FullEFKStack bool   `json:"fullEFKStack,omitempty"`
 }
 
 type Kotsadm struct {
 	Version                      string `json:"version"`
 	ApplicationSlug              string `json:"applicationSlug,omitempty"`
 	UiBindPort            int    `json:"uiBindPort,omitempty"`
-	KotsadmHostname              string `json:"kotsadmHostname,omitempty"`
-	KotsadmApplicationNamepsaces string `json:"kotsadmApplicationNamepsaces,omitempty"`
-	KotsadmAlpha               string `json:"kotsadmAlpha,omitempty"`
+	Hostname              string `json:"hostname,omitempty"`
+	ApplicationNamespaces string `json:"applicationNamepsaces,omitempty"`
 }
 
 type Velero struct {
 	Version    string `json:"version"`
 	Namespace  string `json:"namespace,omitempty"`
 	InstallCLI bool   `json:"installCLI,omitempty"`
-	UseRestic  bool   `json:"useREstic,omitempty"`
-	LocalBucket  bool   `json:"localBucket,omitempty"`
+	DisableRestic  bool   `json:"disableRestic,omitempty"`
+	LocalBucket  string   `json:"localBucket,omitempty"`
 }
 
 type Minio struct {
 	Version        string `json:"version"`
-	MinioNamespace string `json:"minioNamespace,omitempty"`
+	namespace string `json:"namespace,omitempty"`
 }
 
 type OpenEBS struct {
 	Version                    string `json:"version"`
-	OpenEBSLocalPV             string `json:"openEBSLocalPV,omitempty"`
-	OpenEBSLocalPVStorageClass string `json:"openEBSLocalPVStorageClass,omitempty"`
-	OpenEBSNamespace           string `json:"openEBSNamespace,omitempty"`
+	LocalPV             string `json:"localPV,omitempty"`
+	LocalPVStorageClass string `json:"localPVStorageClass,omitempty"`
+	Namespace           string `json:"namespace,omitempty"`
 }
 
 type Flags struct {
@@ -137,7 +136,6 @@ type Flags struct {
 // InstallerStatus defines the observed state of Installer
 type InstallerStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
 }
 
 // +genclient

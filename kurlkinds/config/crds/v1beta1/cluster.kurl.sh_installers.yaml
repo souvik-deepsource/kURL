@@ -32,7 +32,6 @@ spec:
         metadata:
           type: object
         spec:
-          description: InstallerSpec defines the desired state of Installer
           properties:
             contour:
               properties:
@@ -85,7 +84,7 @@ spec:
               type: object
             fluentd:
               properties:
-                efkStack:
+                fullEFKStack:
                   type: boolean
                 version:
                   type: string
@@ -94,13 +93,11 @@ spec:
               type: object
             kotsadm:
               properties:
+                applicationNamepsaces:
+                  type: string
                 applicationSlug:
                   type: string
-                kotsadmAlpha:
-                  type: string
-                kotsadmApplicationNamepsaces:
-                  type: string
-                kotsadmHostname:
+                hostname:
                   type: string
                 uiBindPort:
                   type: integer
@@ -113,6 +110,8 @@ spec:
               properties:
                 HACluster:
                   type: boolean
+                MasterAddress:
+                  type: string
                 apiServiceAddress:
                   type: string
                 bootstrapToken:
@@ -125,10 +124,6 @@ spec:
                   type: boolean
                 kubeadmTokenCAHash:
                   type: string
-                kubernetesMasterAddress:
-                  type: string
-                kubernetesUpgradePatchVersion:
-                  type: boolean
                 loadBalancerAddress:
                   type: string
                 serviceCIDR:
@@ -142,7 +137,7 @@ spec:
               type: object
             minio:
               properties:
-                minioNamespace:
+                namespace:
                   type: string
                 version:
                   type: string
@@ -151,11 +146,11 @@ spec:
               type: object
             openEBS:
               properties:
-                openEBSLocalPV:
+                localPV:
                   type: string
-                openEBSLocalPVStorageClass:
+                localPVStorageClass:
                   type: string
-                openEBSNamespace:
+                namespace:
                   type: string
                 version:
                   type: string
@@ -180,9 +175,9 @@ spec:
               type: object
             rook:
               properties:
-                cephPoolReplicas:
+                cephReplicaCount:
                   type: integer
-                storageClass:
+                storageClassName:
                   type: string
                 version:
                   type: string
@@ -191,14 +186,14 @@ spec:
               type: object
             velero:
               properties:
+                disableRestic:
+                  type: boolean
                 installCLI:
                   type: boolean
                 localBucket:
-                  type: boolean
+                  type: string
                 namespace:
                   type: string
-                useREstic:
-                  type: boolean
                 version:
                   type: string
               required:
@@ -208,8 +203,8 @@ spec:
               properties:
                 IPAllocRange:
                   type: string
-                encryptNetwork:
-                  type: string
+                isEncryptionDisabled:
+                  type: boolean
                 podCIDR:
                   type: string
                 podCIDRRange:
