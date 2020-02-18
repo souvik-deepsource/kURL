@@ -1,81 +1,76 @@
 apiVersion: cluster.kurl.sh/v1beta1
 kind: Installer
 metadata:
-  name: "base"
+  name: "test"
 spec:
-  kubernetes:
+  contour:
     version: latest
-    serviceCIDR: 10.96.0.0/12
-    serviceSubnetSize: "/32"
-    bootstrapToken: 12xsr3d
-    bootstrapTokenTTL: 89f9d88df9
-    HACluster: false
-    loadBalancerAddress: "1.232"
-    kubernetesUpgradePatchVersion: true
-    sdhfdhjjfd: 1
-    kubernetesMasterAddress: 192.13.4.3
-    apiServiceAddress: 192.168.1.1
-    kubeadmTokenCAHash: dfljfgdl
-    controlPlane: true
-    certKey: "secret"
   docker:
-    version: latest
-    bypassStorageDriverWarnings: false
+    additionalNoProxy: 1.1.1.1
+    bypassStorageDriverWarning: false
+    dockerRegistryIP: 1.1.1.1
     hardFailOnLoopback: false
     noCEOnEE: false
     noDocker: false
-    additionalNoProxy: 2.3.1.3/32
-    dockerRegistryIP: 127.0.0.1
-  weave:
-    version: latest
-    encryptNetwork: true
-    IPAllocRange: 10.32.0.0/12
-    podCIDRRange: "/32"
-    podCIDR: "1.1.1.1"
-  contour:
-    version: latest
-    disableCountour: true
-  rook:
-    version: latest
-    storageClass: default
-    cephPoolReplicas: 1
-  registry:
-    version: latest
-    registryPublishPort: "2323"
-  prometheus:
     version: latest
   fluentd:
+    fullEFKStack: false
     version: latest
-    efkStack: true
   kotsadm:
+    applicationNamespace: namespace
+    applicationSlug: slug
+    hostname: 1.1.1.1
+    uiBindPort: 80
     version: latest
-    applicationSlug: sentry
-    uiBindPort: 8800
-    kotsadmApplicationNamepsaces: "best"
-    kotsadmHostname: 192.168.2.2
-    kotsadmAlpha: "alpha"
-  velero:
+  kubernetes:
+    HACluster: true
+    apiServiceAddress: 1.1.1.1
+    bootstrapToken: abc
+    bootstrapTokenTTL: long
+    certKey: medico
+    controlPlane: false
+    kubeadmTokenCAHash: rot13
+    loadBalancerAddress: 1.1.1.1
+    masterAddress: 1.1.1.1
+    serviceCIDR: 1.1.1.1
+    serviceCIDRRange: "/24"
     version: latest
-    namespace: velero
-    installCLI: false
-    useRestic: false
-    LocalBucket: false
-  minio:
-    version: "latest"
-    minioNamespace: "minio"
-  openEBS:
-    version: "latest"
-    openEBSLocalPV: "strongpv"
-    openEBSLocalPVStorageClass: "gym"
-    openEBSNamespace: "openebs"
-  flags:
-    isKurl: True
-    airgap: true
-    hostnameCheck: "test"
-    HTTPProxy: "1.1.1."
-    noProxy: false
-    publicAddress: 38.3.5.3
-    privateAddress: 10.32.45.5
-    hardFailOnFirewalld: true
+  kurl:
+    HTTPProxy: 1.1.1.1
+    airgap: false
     bypassFirewalldWarning: false
-    Task: "important"
+    hardFailOnFirewalld: false
+    hostnameCheck: 1.1.1.1
+    noProxy: false
+    privateAddress: 1.1.1.1
+    publicAddress: 1.1.1.1
+    task: string
+  minio:
+    namespace: minio
+    version: latest
+  openEBS:
+    localPV: false
+    localPVStorageClass: default
+    namespace: openebs
+    version: latest
+  prometheus:
+    version: latest
+  registry:
+    registryPublishPort: 1.1.1.1
+    version: latest
+  rook:
+    cephReplicaCount: 9000
+    storageClassName: store
+    version: latest
+  velero:
+    installCLI: false
+    localBucket: name
+    namespace: velero
+    disableRestic: false
+    version: latest
+  weave:
+    IPAllocRange: 1.1.1.1
+    isEncryptionDisabled: false
+    podCIDR: 1.1.1.1
+    podCIDRRange: "/24"
+    version: latest

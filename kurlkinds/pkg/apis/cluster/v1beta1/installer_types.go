@@ -33,104 +33,105 @@ type InstallerSpec struct {
 	Velero     Velero     `json:"velero,omitempty"`
 	Minio      Minio      `json:"minio,omitempty"`
 	OpenEBS    OpenEBS    `json:"openEBS,omitempty"`
-	Flags      Flags      `json:"flags,omitempty"`
-}
-
-type Kubernetes struct {
-	Version                       string `json:"version"`
-	ServiceCIDR                   string `json:"serviceCIDR,omitempty"`
-	ServiceCIDRRange             string `json:"serviceCIDRRange,omitempty"`
-	BootstrapToken                string `json:"bootstrapToken,omitempty"`
-	BootstrapTokenTTL             string `json:"bootstrapTokenTTL,omitempty"`
-	HACluster                     bool   `json:"HACluster,omitempty"`
-	LoadBalancerAddress           string `json:"loadBalancerAddress,omitempty"`
-	MasterAddress       string `json:"MasterAddress,omitempty"`
-	ApiServiceAddress             string `json:"apiServiceAddress,omitempty"`
-	KubeadmTokenCAHash            string `json:"kubeadmTokenCAHash,omitempty"`
-	ControlPlane                  bool   `json:"controlPlane,omitempty"`
-	CertKey                       string `json:"certKey,omitempty"`
-}
-
-type Docker struct {
-	Version                    string `json:"version"`
-	BypassStorageDriverWarning bool   `json:"bypassStorageDriverWarning,omitempty"`
-	HardFailOnLoopback         bool   `json:"hardFailOnLoopBack,omitempty"`
-	NoCEOnEE                   bool   `json:"noCEOnEE,omitempty"`
-	NoDocker                   bool   `json:"noDocker,omitempty"`
-	AdditionalNoProxy          string `json:"additionalNoProxy,omitempty"`
-	SkipDockerPull             bool   `json:"skipDockerPull,omitempty"`
-	DockerRegistryIP           string `json:"dockerRegistryIP,omitempty"`
-}
-
-type Weave struct {
-	Version        string `json:"version"`
-	isEncryptionDisabled bool   `json:"isEncryptionDisabled,omitempty"`
-	IPAllocRange   string `json:"IPAllocRange,omitempty"`
-	PodCIDR        string `json:"podCIDR,omitempty"`
-	PodCIDRRange        string `json:"podCIDRRange,omitempty"`
+	Kurl       Kurl       `json:"kurl,omitempty"`
 }
 
 type Contour struct {
-	Version        string `json:"version"`
+	Version string `json:"version"`
 }
 
-type Rook struct {
-	Version          string `json:"version"`
-	StorageClassName     string `json:"storageClassName,omitempty"`
-	CephRplicaCount int    `json:"cephReplicaCount,omitempty"`
+type Docker struct {
+	AdditionalNoProxy          string `json:"additionalNoProxy,omitempty"`
+	BypassStorageDriverWarning bool   `json:"bypassStorageDriverWarning,omitempty"`
+	DockerRegistryIP           string `json:"dockerRegistryIP,omitempty"`
+	HardFailOnLoopback         bool   `json:"hardFailOnLoopback,omitempty"`
+	NoCEOnEE                   bool   `json:"noCEOnEE,omitempty"`
+	NoDocker                   bool   `json:"noDocker,omitempty"`
+	SkipDockerPull             bool   `json:"skipDockerPull,omitempty"`
+	Version                    string `json:"version"`
 }
 
-type Registry struct {
-	Version             string `json:"version"`
-	RegistryPublishPort string `json:"registryPublishPort,omitempty"`
-}
-
-type Prometheus struct {
-	Version           string `json:"version"`
-}
 type Fluentd struct {
-	Version  string `json:"version"`
 	FullEFKStack bool   `json:"fullEFKStack,omitempty"`
+	Version      string `json:"version"`
 }
 
 type Kotsadm struct {
-	Version                      string `json:"version"`
-	ApplicationSlug              string `json:"applicationSlug,omitempty"`
-	UiBindPort            int    `json:"uiBindPort,omitempty"`
+	ApplicationNamespace string `json:"applicationNamespace,omitempty"`
+	ApplicationSlug       string `json:"applicationSlug,omitempty"`
 	Hostname              string `json:"hostname,omitempty"`
-	ApplicationNamespaces string `json:"applicationNamepsaces,omitempty"`
+	UiBindPort            int    `json:"uiBindPort,omitempty"`
+	Version               string `json:"version"`
 }
 
-type Velero struct {
-	Version    string `json:"version"`
-	Namespace  string `json:"namespace,omitempty"`
-	InstallCLI bool   `json:"installCLI,omitempty"`
-	DisableRestic  bool   `json:"disableRestic,omitempty"`
-	LocalBucket  string   `json:"localBucket,omitempty"`
+type Kubernetes struct {
+	ApiServiceAddress   string `json:"apiServiceAddress,omitempty"`
+	BootstrapToken      string `json:"bootstrapToken,omitempty"`
+	BootstrapTokenTTL   string `json:"bootstrapTokenTTL,omitempty"`
+	CertKey             string `json:"certKey,omitempty"`
+	ControlPlane        bool   `json:"controlPlane,omitempty"`
+	HACluster           bool   `json:"HACluster,omitempty"`
+	KubeadmTokenCAHash  string `json:"kubeadmTokenCAHash,omitempty"`
+	LoadBalancerAddress string `json:"loadBalancerAddress,omitempty"`
+	MasterAddress       string `json:"masterAddress,omitempty"`
+	ServiceCIDR         string `json:"serviceCIDR,omitempty"`
+	ServiceCIDRRange    string `json:"serviceCIDRRange,omitempty"`
+	Version             string `json:"version"`
 }
 
-type Minio struct {
-	Version        string `json:"version"`
-	namespace string `json:"namespace,omitempty"`
-}
-
-type OpenEBS struct {
-	Version                    string `json:"version"`
-	LocalPV             string `json:"localPV,omitempty"`
-	LocalPVStorageClass string `json:"localPVStorageClass,omitempty"`
-	Namespace           string `json:"namespace,omitempty"`
-}
-
-type Flags struct {
+type Kurl struct {
 	Airgap                 bool   `json:"airgap,omitempty"`
 	HostnameCheck          string `json:"hostnameCheck,omitempty"`
 	HTTPProxy              string `json:"HTTPProxy,omitempty"`
 	NoProxy                bool   `json:"noProxy,omitempty"`
 	PublicAddress          string `json:"publicAddress,omitempty"`
 	PrivateAddress         string `json:"privateAddress,omitempty"`
-	HardFailOnFirewallD    bool   `json:"hardFailOnFirewallD,omitempty"`
-	BypassFirewallDWarning bool   `json:"bypassFirewallDWarning,omitempty"`
+	HardFailOnFirewalld    bool   `json:"hardFailOnFirewalld,omitempty"`
+	BypassFirewalldWarning bool   `json:"bypassFirewalldWarning,omitempty"`
 	Task                   string `json:"task,omitempty"`
+}
+
+type Minio struct {
+	Namespace string `json:"namespace,omitempty"`
+	Version   string `json:"version"`
+}
+
+type OpenEBS struct {
+	LocalPV             bool `json:"localPV,omitempty"`
+	LocalPVStorageClass string `json:"localPVStorageClass,omitempty"`
+	Namespace           string `json:"namespace,omitempty"`
+	Version             string `json:"version"`
+}
+
+type Prometheus struct {
+	Version string `json:"version"`
+}
+
+type Registry struct {
+	RegistryPublishPort string `json:"registryPublishPort,omitempty"`
+	Version             string `json:"version"`
+}
+
+type Rook struct {
+	CephRplicaCount  int    `json:"cephReplicaCount,omitempty"`
+	StorageClassName string `json:"storageClassName,omitempty"`
+	Version          string `json:"version"`
+}
+
+type Velero struct {
+	DisableRestic bool   `json:"disableRestic,omitempty"`
+	InstallCLI    bool   `json:"installCLI,omitempty"`
+	LocalBucket   string `json:"localBucket,omitempty"`
+	Namespace     string `json:"namespace,omitempty"`
+	Version       string `json:"version"`
+}
+
+type Weave struct {
+	IPAllocRange         string `json:"IPAllocRange,omitempty"`
+	isEncryptionDisabled bool   `json:"isEncryptionDisabled,omitempty"`
+	PodCIDR              string `json:"podCIDR,omitempty"`
+	PodCIDRRange         string `json:"podCIDRRange,omitempty"`
+	Version              string `json:"version"`
 }
 
 // InstallerStatus defines the observed state of Installer
