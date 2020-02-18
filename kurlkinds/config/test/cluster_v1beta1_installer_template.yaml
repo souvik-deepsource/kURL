@@ -4,37 +4,37 @@ metadata:
   name: "template"
 spec:
   contour:
-    version: {{ ContourVersion }}
+    version: {{ contourVersion }}
   docker:
-    additionalNoProxy: {{ AdditonalNoProxy }}
-    bypassStorageDriverWarning: {{ BypassStoragedriverWarning }}
-    dockerRegistryIP: {{ DockerRegistryIP }}
-    hardFailOnLoopback: {{ HardFailOnLoopback }}
-    noCEOnEE: {{ NoCEOnEE }}
-    noDocker: {{ NoDocker }}
-    version: {{ DockerVersion }}
+    additionalNoProxy: {{ dockerAdditonalNoProxy }}
+    bypassStorageDriverWarning: {{ dockerBypassStoragedriverWarning }}
+    dockerRegistryIP: {{ dockerRegistryIP }}
+    hardFailOnLoopback: {{ dockerHardFailOnLoopback }}
+    noCEOnEE: {{ dockerNoCEOnEE }}
+    noDocker: {{ dockerNoDocker }}
+    version: {{ dockerVersion }}
   fluentd:
-    fullEFKStack: {{ FullEFKStack }}
-    version: {{ FluentdVersion }}
+    fullEFKStack: {{ fluentdFullEFKStack }}
+    version: {{ fluentdVersion }}
   kotsadm:
-    applicationNamespace: {{ KotsadmApplicationNamespace }}
-    applicationSlug: {{ KotsadmApplicationSlug }}
-    hostname: {{ KotsadmHostname }}
-    uiBindPort: {{ KotsadmUIBindPort }}
-    version: {{ KotsadmVersion }}
+    applicationNamespace: {{ kotsadmApplicationNamespace }}
+    applicationSlug: {{ kotsadmApplicationSlug }}
+    hostname: {{ kotsadmHostname }}
+    uiBindPort: {{ kotsadmUIBindPort }}
+    version: {{ kotsadmVersion }}
   kubernetes:
-    HACluster: {{ HACluster }}
-    apiServiceAddress: {{ APIServiceAddress }}
-    bootstrapToken: {{ BootstrapToken }}
-    bootstrapTokenTTL: {{ BootstrapTokenTTL }}
-    certKey: {{ CertKey }}
-    controlPlane: {{ ControlPlane }}
-    kubeadmTokenCAHash: {{ KubeadmTokenCAHash }}
-    loadBalancerAddress: {{ LoadBalancerAddress }}
-    masterAddress: {{ KubernetesMasterAddress }}
-    serviceCIDR: {{ ServiceCIDR }}
-    serviceCIDRRange: {{ ServiceCIDRRange }}
-    version: {{ KubernetesVersion }}
+    HACluster: {{ kubernetesHACluster }}
+    apiServiceAddress: {{ kubernetesAPIServiceAddress }}
+    bootstrapToken: {{ kubernetesBootstrapToken }}
+    bootstrapTokenTTL: {{ kubernetesBootstrapTokenTTL }}
+    certKey: {{ kubernetesCertKey }}
+    controlPlane: {{ kubernetesControlPlane }}
+    kubeadmTokenCAHash: {{ kubernetesKubeadmTokenCAHash }}
+    loadBalancerAddress: {{ kubernetesLoadBalancerAddress }}
+    masterAddress: {{ kubernetesMasterAddress }}
+    serviceCIDR: {{ kubernetesServiceCIDR }}
+    serviceCIDRRange: {{ kubernetesServiceCIDRRange }}
+    version: {{ kubernetesVersion }}
   kurl:
     HTTPProxy: {{ HTTPProxy }}
     airgap: {{ Airgap }}
@@ -46,31 +46,31 @@ spec:
     publicAddress: {{ PublicAddress }}
     task: {{ Task }}
   minio:
-    namespace: {{ MinioNamespace }}
-    version: {{ MinioVersion }}
+    namespace: {{ minioNamespace }}
+    version: {{ minioVersion }}
   openEBS:
-    localPV: {{ OpenEBSLocalPV }}
-    localPVStorageClass: {{ OpenEBSLocalPVStorageClass }}
-    namespace: {{ OpenEBSNamespace }}
-    version: {{ OpenEBSVersion }}
+    localPV: {{ openEBSLocalPV }}
+    localPVStorageClass: {{ openEBSLocalPVStorageClass }}
+    namespace: {{ openEBSNamespace }}
+    version: {{ openEBSVersion }}
   prometheus:
-    version: {{ PrometheusVersion }}
+    version: {{ prometheusVersion }}
   registry:
-    registryPublishPort: {{ RegistryPublishPort }}
-    version: {{ RegistryVersion }}
+    registryPublishPort: {{ registryPublishPort }}
+    version: {{ registryVersion }}
   rook:
-    cephReplicaCount: {{ CephRelicaCount }}
-    storageClassName: {{ StorageClassName }}
-    version: {{ RookVersion }}
+    cephReplicaCount: {{ rookCephReplicaCount }}
+    storageClassName: {{ rookStorageClassName }}
+    version: {{ rookVersion }}
   velero:
-    disableRestic: {{ VeleroDisableRestic }}
-    installCLI: {{ VeleroInstallCLI }}
-    localBucket: {{ VeleroLocalBucket }}
-    namespace: {{ VeleroNamespace }}
-    version: {{ VeleroVersion }}
+    disableRestic: {{ veleroDisableRestic }}
+    installCLI: {{ veleroInstallCLI }}
+    localBucket: {{ veleroLocalBucket }}
+    namespace: {{ veleroNamespace }}
+    version: {{ veleroVersion }}
   weave:
-    IPAllocRange: {{ IPAllocRange }}
-    isEncryptionDisabled: {{ isEncryptionDisabled }}
-    podCIDR: {{ PodCIDR }}
-    podCIDRRange: {{ PodCIDRRange }}
-    version: {{ WeaveVersion }}
+    IPAllocRange: {{ weaveIPAllocRange }}
+    isEncryptionDisabled: {{ weaveisEncryptionDisabled }}
+    podCIDR: {{ weavePodCIDR }}
+    podCIDRRange: {{ weavePodCIDRRange }}
+    version: {{ weaveVersion }}

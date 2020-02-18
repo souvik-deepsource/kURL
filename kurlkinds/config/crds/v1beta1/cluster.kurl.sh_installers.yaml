@@ -15,7 +15,6 @@ spec:
     plural: installers
     singular: installer
   scope: Namespaced
-  preserveUnknownFields: false
   validation:
     openAPIV3Schema:
       description: Installer is the Schema for the installers API
@@ -168,7 +167,7 @@ spec:
             registry:
               properties:
                 registryPublishPort:
-                  type: string
+                  type: integer
                 version:
                   type: string
               required:

@@ -42,244 +42,251 @@ function setup_kubeadm_kustomize() {
     mkdir -p $DIR/kustomize/kubeadm/join-patches
 }
 
-function kubernetes_yaml() {
-    sed -i "s/{{ KubernetesVersion }}/$KUBERNETES_VERSION/" "$1"
+function replace_with_variable_or_delete_line() {
+    #if the variable exists, replace with that variables value, otherwise delete the entire line
+    local filename=$1
+    local replace_string=$2
+    local bash_variable=$3
 
-    sed -i "s/{{ BootstrapToken }}/$BOOTSTRAP_TOKEN/" "$1"
 
-    sed -i "s/{{ BootstrapTokenTTL }}/$BOOTSTRAP_TOKEN_TTL/" "$1"
-
-    if [ -z $LOAD_BALANCER_ADDRESS ]; then
-        sed -i "s/{{ LoadBalancerAddress }}/$LOAD_BALANCER_ADDRESS/" "$1"
+    if [ -z $bash_variable ]; then
+        sed -i "/$replace_string/d" "$filename"
     else
-        sed -i "s/{{ HACluster }}/true/" "$1"
-        sed -i "s/{{ LoadBalancerAddress }}/$LOAD_BALANCER_ADDRESS/" "$1"
+        sed -i "s|$replace_string|$bash_variable|" "$filename"
     fi
-
-    # if $LOAD_BALANCER_ADDRESS is set HACluster is already set to true and this block is ignored
-    if [ -z $HA_CLUSTER ]; then
-        sed -i "s/{{ HACluster }}/false/" "$1"
-    else
-        sed -i "s/{{ HACluster }}/true/" "$1"
-    fi
-
-    if [ -z $K8S_UPGRADE_PATCH_VERSION ]; then
-        sed -i "s/{{ KubernetesUpgradePatchVersion }}/false/" "$1"
-    else
-        sed -i "s/{{ KubernetesUpgradePatchVersion }}/true/" "$1"
-    fi
-
-    sed -i "s/{{ KubernetesMasterAddress }}/$KUBERNETES_MASTER_ADDR/" "$1"
-
-    sed -i "s/{{ APIServiceAddress }}/$API_SERVICE_ADDRESS/" "$1"
-
-    sed -i "s/{{ KubeadmTokenCAHash }}/$KUBEADM_TOKEN_CA_HASH/" "$1"
-
-    if [ -z $MASTER ]; then
-        sed -i "s/{{ ControlPlane }}/false/" "$1"
-    else
-        sed -i "s/{{ ControlPlane }}/true/" "$1"
-    fi
-
-    sed -i "s/{{ CertKey }}/$CERT_KEY/" "$1"
-
-    sed -i "s/{{ ServiceCIDR }}/$SERVICE_CIDR/" "$1"
-
-    sed -i "s/{{ ServiceCIDRRange }}/$SERVICE_CIDR_RANGE/" "$1"
 }
 
-function docker_yaml() {
-    sed -i "s/{{ DockerVersion }}/$DOCKER_VERSION/" "$1"
+function replace_with_true_or_false() {
+    #if the variable exists, replace with true, otherwise false
+    local filename=$1
+    local replace_string=$2
+    local bash_variable=$3
 
-    if [ -z $BYPASS_STORAGEDRIVER_WARNING ]; then
-        sed -i "s/{{ BypassStoragedriverWarning }}/false/" "$1"
+    if [ -z $bash_variable ]; then
+        sed -i "s|$replace_string|false|" "$filename"
     else
-        sed -i "s/{{ BypassStoragedriverWarning }}/true/" "$1"
+        sed -i "s|$replace_string|true|" "$filename"
     fi
-
-    if [ -z $SKIP_DOCKER_INSTA:: ]; then
-        sed -i "s/{{ NoDocker }}/false/" "$1"
-    else
-        sed -i "s/{{ NoDocker }}/true/" "$1"
-    fi
-
-    if [ -z $NO_CE_ON_EE ]; then
-        sed -i "s/{{ NoCEOnEE }}/false/" "$1"
-    else
-        sed -i "s/{{ NoCEOnEE }}/true/" "$1"
-    fi
-
-    if [ -z $HARD_FAIL_ON_LOOPBACK ]; then
-        sed -i "s/{{ HardFailOnLoopback }}/false/" "$1"
-    else
-        sed -i "s/{{ HardFailOnLoopback }}/true/" "$1"
-    fi
-
-    sed -i "s/{{ AdditonalNoProxy }}/$ADDITIONAL_NO_PROXY/" "$1"
-
-    sed -i "s/{{ DockerRegistryIp }}/$DOCKER_REGISTRY_IP/" "$1"
-}
-
-function kotsadm_yaml() {
-    sed -i "s/{{ KotsadmVersion }}/$KOTSADM_VERSION/" "$1"
-
-    sed -i "s/{{ KotsadmApplicationSlug }}/$KOTSADM_APPLICATION_SLUG/" "$1"
-
-    sed -i "s/{{ KotsadmHostname }}/$KOTSADM_HOSTNAME/" "$1"
-
-    if [ -z $KOTSADM_UI_BIND_PORT ]; then
-        sed -i "s/{{ KotsadmUIBindPort }}/0/" "$1"
-    else
-        sed -i "s/{{ KotsadmUIBindPort }}/$KOTSADM_UI_BIND_PORT/" "$1"
-    fi
-
-    sed -i "s/{{ KotsadmApplicationNamepsaces }}/$KOTSADM_APPLICATION_NAMESPACES/" "$1"
-
-    sed -i "s/{{ KotsadmAlpha }}/$KOTSADM_ALPHA/" "$1"
 }
 
 function contour_yaml() {
-    sed -i "s/{{ ContourVersion }}/$CONTOUR_VERSION/" "$1"
-}
+    local filename=$1
+    local addon_name="contour"
 
-function prometheus_yaml() {
-    sed -i "s/{{ PrometheusVersion }}/$PROMETHEUS_VERSION/" "$1"
-}
-
-function rook_yaml() {
-    sed -i "s/{{ RookVersion }}/$ROOK_VERSION/" "$1"
-
-    sed -i "s/{{ StorageClass }}/$STORAGE_CLASS/" "$1"
-
-    if [ -z $CEPH_POOL_REPLICAS ]; then
-        sed -i "s/{{ CephPoolReplicas }}/0/" "$1"
-    else
-        sed -i "s/{{ CephPoolReplicas }}/$CEPH_POOL_REPLICAS/" "$1"
+    if [ -z $CONTOUR_VERSION ]; then
+        sed -i "/$addon_name/d" $filename
+        exit 1
     fi
+
+    replace_with_variable_or_delete_line $filename "{{ contourVersion }}" "$CONTOUR_VERSION"
+}
+
+function docker_yaml() {
+    local filename=$1
+    local addon_name="docker"
+
+    if [ -z $DOCKER_VERSION ]; then
+        sed -i "/$addon_name/d" $filename
+        exit 1
+    fi
+
+    replace_with_variable_or_delete_line $filename "{{ dockerAdditonalNoProxy }}" "$ADDITIONAL_NO_PROXY"
+    replace_with_true_or_false $filename "{{ dockerBypassStoragedriverWarning }}" "$BYPASS_STORAGEDRIVER_WARNING"
+    replace_with_variable_or_delete_line $filename "{{ dockerRegistryIP }}" "$DOCKER_REGISTRY_IP"
+    replace_with_true_or_false $filename "{{ dockerHardFailOnLoopback }}" "$HARD_FAIL_ON_LOOPBACK"
+    replace_with_true_or_false $filename "{{ dockerNoCEOnEE }}" "$NO_CE_ON_EE"
+    replace_with_true_or_false $filename "{{ dockerNoDocker }}" "$SKIP_DOCKER_INSTA"
+    replace_with_variable_or_delete_line $filename "{{ dockerVersion }}" "$DOCKER_VERSION"
 }
 
 function fluentd_yaml() {
-    sed -i "s/{{ FluentdVersion }}/$FLUENTD_VERSION/" "$1"
+    local filename=$1
+    local addon_name="fluentd"
 
-    if [ -z $FLUENTD_FULL_EFK_STACK ]; then
-        sed -i "s/{{ EfkStack }}/false/" "$1"
-    else
-        sed -i "s/{{ EfkStack }}/true/" "$1"
-    fi
-}
-
-function weave_yaml() {
-    sed -i "s/{{ WeaveVersion }}/$WEAVE_VERSION/" "$1"
-
-    sed -i "s/{{ EncryptNetwork }}/$ENCRYPT_NETWORK/" "$1"
-
-    sed -i "s/{{ IPAllocRange }}/$IP_ALLOC_RANGE/" "$1"
-
-    sed -i "s/{{ PodCIDR }}/$POD_CIDR/" "$1"
-
-    sed -i "s/{{ PodCIDRRange }}/$POD_CIDR_RANGE/" "$1"
-}
-
-function registry_yaml() {
-    sed -i "s/{{ RegistryVersion }}/$REGISTRY_VERSION/" "$1"
-
-    sed -i "s/{{ RegistryPublishPort }}/$REGISTRY_PUBLISH_PORT/" "$1"
-}
-
-
-function velero_yaml() {
-    sed -i "s/{{ VeleroVersion }}/$VELERO_VERSION/" "$1"
-
-    sed -i "s/{{ VeleroNamespace }}/$VELERO_NAMESPACE/" "$1"
-
-    if [ -z $VELERO_LOCAL_BUCKET ]; then
-        sed -i "s/{{ VeleroLocalBucket }}/false/" "$1"
-    else
-        sed -i "s/{{ VeleroLocalBucket }}/true/" "$1"
+    if [ -z $FLUENTD_VERSION ]; then
+        sed -i "/$addon_name/d" $filename
+        exit 1
     fi
 
-    if [ -z $VELERO_INSTALL_CLI ]; then
-        sed -i "s/{{ VeleroInstallCLI }}/false/" "$1"
-    else
-        sed -i "s/{{ VeleroInstallCLI }}/true/" "$1"
-    fi
-
-    if [ -z $VELERO_INSTALL_CLI ]; then
-        sed -i "s/{{ VeleroUseRestic }}/false/" "$1"
-    else
-        sed -i "s/{{ VeleroUseRestic }}/true/" "$1"
-    fi
+    replace_with_true_or_false $filename "{{ fluentdFullEFKStack }}" "$FLUENTD_FULL_EFK_STACK"
+    replace_with_variable_or_delete_line $filename "{{ fluentdVersion }}" "$FLUENTD_VERSION"
 }
 
-function minio_yaml() {
-    sed -i "s/{{ MinioVersion }}/$MINIO_VERSION/" "$1"
-    sed -i "s/{{ MinioNamespace }}/$MINIO_NAMESPACE/" "$1"
+function kotsadm_yaml() {
+    local filename=$1
+    local addon_name="kotsadm"
+
+    if [ -z $KOTSADM_VERSION ]; then
+        sed -i "/$addon_name/d" $filename
+        exit 1
+    fi
+
+    replace_with_variable_or_delete_line $filename "{{ kotsadmApplicationNamespace }}" "$KOTSADM_APPLICATION_NAMESPACE"
+    replace_with_variable_or_delete_line $filename "{{ kotsadmApplicationSlug }}" "$KOTSADM_APPLICATION_SLUG"
+    replace_with_variable_or_delete_line $filename "{{ kotsadmHostname }}" "$KOTSADM_HOSTNAME"
+    replace_with_variable_or_delete_line $filename "{{ kotsadmUIBindPort }}" "$KOTSADM_UI_BIND_PORT"
+    replace_with_variable_or_delete_line $filename "{{ kotsadmVersion }}" "$KOTSADM_VERSION"
 }
 
-function openebs_yaml() {
-    sed -i "s/{{ OpenEBSVersion }}/$OPENEBS_VERSION/" "$1"
-    sed -i "s/{{ OpenEBSNamespace }}/$OPENEBS_NAMESPACE/" "$1"
-    sed -i "s/{{ OpenEBSLocalPV }}/$OPENEBS_LOCALPV/" "$1"
-    sed -i "s/{{ OpenEBSLocalPVStorageClass }}/$OPENEBS_LOCAL_PV_STORAGE_CLASS/" "$1"
+function kubernetes_yaml() {
+    local filename=$1
+    local addon_name="kubernetes"
+
+    if [ -z $KUBERNETES_VERSION ]; then
+        sed -i "/$addon_name/d" $filename
+        exit 1
+    fi
+
+    replace_with_variable_or_delete_line $filename "{{ kubernetesAPIServiceAddress }}" "$API_SERVICE_ADDRESS"
+    replace_with_variable_or_delete_line $filename "{{ kubernetesBootstrapToken }}" "$BOOTSTRAP_TOKEN"
+    replace_with_variable_or_delete_line $filename "{{ kubernetesBootstrapTokenTTL }}" "$BOOTSTRAP_TOKEN_TTL"
+    replace_with_variable_or_delete_line $filename "{{ kubernetesCertKey }}" "$CERT_KEY"
+    replace_with_true_or_false $filename  "{{ kubernetesControlPlane }}" $MASTER
+    replace_with_variable_or_delete_line $filename "{{ kubernetesKubeadmTokenCAHash }}" "$KUBEADM_TOKEN_CA_HASH"
+
+    #HA_CLUSTER will eventually be deprectated
+    if [ -z $LOAD_BALANCER_ADDRESS ]; then
+        replace_with_variable_or_delete_line $filename "{{ kubernetesLoadBalancerAddress }}" "$LOAD_BALANCER_ADDRESS"
+        replace_with_true_or_false $filename "{{ kubernetesLoadBalancerAddress }}" "$HA_CLUSTER"
+    else
+        # if $LOAD_BALANCER_ADDRESS is set HACluster is also set to true
+        replace_with_variable_or_delete_line $filename "{{ kubernetesLoadBalancerAddress }}" "$LOAD_BALANCER_ADDRESS"
+        sed -i "s/{{ kubernetesHACluster }}/true/" "$1"
+    fi
+
+    replace_with_variable_or_delete_line $filename "{{ kubernetesMasterAddress }}" "$KUBERNETES_MASTER_ADDR"
+    replace_with_variable_or_delete_line $filename "{{ kubernetesServiceCIDR }}" "$SERVICE_CIDR"
+    replace_with_variable_or_delete_line $filename "{{ kubernetesServiceCIDRRange }}" "$SERVICE_CIDR_RANGE"
+    replace_with_variable_or_delete_line $filename "{{ kubernetesVersion }}" "$KUBERNETES_VERSION"
 }
 
 function flags_yaml() {
+    local filename=$1
 
-    if [ -z $AIRGAP ]; then
-        sed -i "s/{{ Airgap }}/false/" "$1"
-    else
-        sed -i "s/{{ Airgap }}/true/" "$1"
+    replace_with_variable_or_delete_line $filename "{{ HTTPProxy }}" "$PROXY_ADDRESS"
+    replace_with_true_or_false $filename "{{ Airgap }}" $AIRGAP
+    replace_with_true_or_false $filename "{{ BypassFirewalldWarning }}" "$BYPASS_FIREWALLD_WARNING"
+    replace_with_true_or_false $filename "{{ HardFailOnFirewalld }}" "$HARD_FAIL_ON_FIREWALLD"
+    replace_with_variable_or_delete_line $filename "{{ HostnameCheck }}" "$HOSTNAME_CHECK"
+    replace_with_true_or_false $filename "{{ NoProxy }}" $NO_PROXY
+    replace_with_variable_or_delete_line $filename "{{ PrivateAddress }}" "$PRIVATE_ADDRESS"
+    replace_with_variable_or_delete_line $filename "{{ PublicAddress }}" "$PUBLIC_ADDRESS"
+    replace_with_variable_or_delete_line $filename "{{ Task }}" "$TASK"
+}
+
+function minio_yaml() {
+    local filename=$1
+    local addon_name="minio"
+
+    if [ -z $MINIO_VERSION ]; then
+        sed -i "/$addon_name/d" $filename
+        exit 1
     fi
 
-    if [ -z $NO_PROXY ]; then
-        sed -i "s/{{ NoProxy }}/false/" "$1"
-    else
-        sed -i "s/{{ NoProxy }}/true/" "$1"
+    replace_with_variable_or_delete_line $filename "{{ minioNamespace }}" "$MINIO_NAMESPACE"
+    replace_with_variable_or_delete_line $filename "{{ minioVersion }}" "$MINIO_VERSION"
+}
+
+function openebs_yaml() {
+    local filename=$1
+    local addon_name="openEBS"
+
+    if [ -z $OPENEBS_VERSION ]; then
+        sed -i "/$addon_name/d" $filename
+        exit 1
     fi
 
-    sed -i "s/{{ HostnameCheck }}/$HOSTNAME_CHECK/" "$1"
+    replace_with_variable_or_delete_line $filename "{{ openEBSNamespace }}" "$OPENEBS_NAMESPACE"
+    replace_with_true_or_false $filename "{{ openEBSLocalPV }}" "$OPENEBS_LOCALPV"
+    replace_with_variable_or_delete_line $filename "{{ openEBSLocalPVStorageClass }}" "$OPENEBS_LOCALPV_STORAGE_CLASS"
+    replace_with_variable_or_delete_line $filename "{{ openEBSVersion }}" "$OPENEBS_VERSION"
+}
 
-    sed -i "s/{{ HTTPProxy }}/$PROXY_ADDRESS/" "$1"
+function prometheus_yaml() {
+    local filename=$1
+    local addon_name="prometheus"
 
-    if [ -z $BYPASS_STORAGEDRIVER_WARNINGS ]; then
-        sed -i "s/{{ BypassStorageDriverWarning }}/false/" "$1"
-    else
-        sed -i "s/{{ BypassStorageDriverWarning }}/true/" "$1"
+    if [ -z $PROMETHEUS_VERSION ]; then
+        sed -i "/$addon_name/d" $filename
+        exit 1
     fi
 
-    sed -i "s/{{ PrivateAddress }}/$PRIVATE_ADDRESS/" "$1"
+    replace_with_variable_or_delete_line $filename "{{ prometheusVersion }}" "$PROMETHEUS_VERSION"
+}
 
-    sed -i "s/{{ PublicAddress }}/$PUBLIC_ADDRESS/" "$1"
+function registry_yaml() {
+    local filename=$1
+    local addon_name="registry"
 
-    if [ -z $HARD_FAIL_ON_FIREWALLD ]; then
-        sed -i "s/{{ HardFailOnFirewallD }}/false/" "$1"
-    else
-        sed -i "s/{{ HardFailOnFirewallD }}/true/""$1"
+    if [ -z $REGISTRY_VERSION ]; then
+        sed -i "/$addon_name/d" $filename
+        exit 1
     fi
 
-    if [ -z $BYPASS_FIREWALLD_WARNING ]; then
-        sed -i "s/{{ BypassFirewallDWarning }}/false/" "$1"
-    else
-        sed -i "s/{{ BypassFirewallDWarning }}/true/" "$1"
+    replace_with_variable_or_delete_line $filename "{{ registryPublishPort }}" "$REGISTRY_PUBLISH_PORT"
+    replace_with_variable_or_delete_line $filename "{{ registryVersion }}" "$REGISTRY_VERSION"
+}
+
+function rook_yaml() {
+    local filename=$1
+    local addon_name="rook"
+
+    if [ -z $ROOK_VERSION ]; then
+        sed -i "/$addon_name/d" $filename
+        exit 1
     fi
 
-    sed -i "s/{{ Task }}/$TASK/" "$1"
+    replace_with_variable_or_delete_line $filename "{{ rookStorageClassName }}" "$STORAGE_CLASS"
+    replace_with_variable_or_delete_line $filename "{{ rookCephReplicaCount }}" "$CEPH_POOL_REPLICAS"
+    replace_with_variable_or_delete_line $filename "{{ rookVersion }}" "$ROOK_VERSION"
+}
+
+function velero_yaml() {
+    local filename=$1
+    local addon_name="velero"
+
+    if [ -z $VELERO_VERSION ]; then
+        sed -i "/$addon_name/d" $filename
+        exit 1
+    fi
+
+    replace_with_true_or_false $filename "{{ veleroDisableRestic }}" "$VELERO_USE_RESTIC"
+    replace_with_true_or_false $filename "{{ veleroInstallCLI }}" "$VELERO_INSTALL_CLI"
+    replace_with_variable_or_delete_line $filename "{{ veleroLocalBucket }}" "$VELERO_LOCAL_BUCKET"
+    replace_with_variable_or_delete_line $filename "{{ veleroNamespace }}" "$VELERO_NAMESPACE"
+    replace_with_variable_or_delete_line $filename "{{ veleroVersion }}" "$VELERO_VERSION"
+}
+
+function weave_yaml() {
+    local filename=$1
+    local addon_name="weave"
+
+    if [ -z $WEAVE_VERSION ]; then
+        sed -i "/$addon_name/d" $filename
+        exit 1
+    fi
+
+    replace_with_variable_or_delete_line $filename "{{ weaveIPAllocRange }}" "$WEAVE_IP_ALLOC_RANGE"
+    replace_with_true_or_false $filename "{{ weaveisEncryptionDisabled }}" "$ENCRYPT_NETWORK"
+    replace_with_variable_or_delete_line $filename "{{ weavePodCIDR }}" "$WEAVE_POD_CIDR"
+    replace_with_variable_or_delete_line $filename "{{ weavePodCIDRRange }}" "$WEAVE_POD_CIDR_RANGE"
+    replace_with_variable_or_delete_line $filename "{{ weaveVersion }}" "$WEAVE_VERSION"
 }
 
 function apply_flags_to_yaml() {
-    kubernetes_yaml "$1"
-    docker_yaml "$1"
-    kotsadm_yaml "$1"
-    weave_yaml "$1"
     contour_yaml "$1"
-    rook_yaml "$1"
-    registry_yaml "$1"
-    prometheus_yaml "$1"
+    docker_yaml "$1"
     fluentd_yaml "$1"
-    velero_yaml "$1"
+    kotsadm_yaml "$1"
+    kubernetes_yaml "$1"
+    flags_yaml "$1"
     minio_yaml "$1"
     openebs_yaml "$1"
-    flags_yaml "$1"
+    prometheus_yaml "$1"
+    registry_yaml "$1"
+    rook_yaml "$1"
+    velero_yaml "$1"
+    weave_yaml "$1"
 }
 
 function setup_installer_crd() {

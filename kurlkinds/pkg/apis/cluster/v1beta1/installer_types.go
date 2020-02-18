@@ -108,7 +108,7 @@ type Prometheus struct {
 }
 
 type Registry struct {
-	RegistryPublishPort string `json:"registryPublishPort,omitempty"`
+	RegistryPublishPort int `json:"registryPublishPort,omitempty"`
 	Version             string `json:"version"`
 }
 
