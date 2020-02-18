@@ -4,14 +4,15 @@ metadata:
   name: "base"
 spec:
   kubernetes:
-    version: 1.16.4
+    version: latest
     serviceCIDR: 10.96.0.0/12
     serviceSubnetSize: "/32"
     bootstrapToken: 12xsr3d
     bootstrapTokenTTL: 89f9d88df9
-    HACluster: true
+    HACluster: false
     loadBalancerAddress: "1.232"
     kubernetesUpgradePatchVersion: true
+    sdhfdhjjfd: 1
     kubernetesMasterAddress: 192.13.4.3
     apiServiceAddress: 192.168.1.1
     kubeadmTokenCAHash: dfljfgdl
