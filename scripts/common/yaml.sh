@@ -266,7 +266,6 @@ function weave_yaml() {
         exit 1
     fi
 
-    replace_with_variable_or_delete_line $filename "{{ weaveIPAllocRange }}" "$WEAVE_IP_ALLOC_RANGE"
     replace_with_true_or_false $filename "{{ weaveisEncryptionDisabled }}" "$ENCRYPT_NETWORK"
     replace_with_variable_or_delete_line $filename "{{ weavePodCIDR }}" "$WEAVE_POD_CIDR"
     replace_with_variable_or_delete_line $filename "{{ weavePodCIDRRange }}" "$WEAVE_POD_CIDR_RANGE"

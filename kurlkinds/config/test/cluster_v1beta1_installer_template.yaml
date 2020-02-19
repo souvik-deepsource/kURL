@@ -69,7 +69,6 @@ spec:
     namespace: {{ veleroNamespace }}
     version: {{ veleroVersion }}
   weave:
-    IPAllocRange: {{ weaveIPAllocRange }}
     isEncryptionDisabled: {{ weaveisEncryptionDisabled }}
     podCIDR: {{ weavePodCIDR }}
     podCIDRRange: {{ weavePodCIDRRange }}

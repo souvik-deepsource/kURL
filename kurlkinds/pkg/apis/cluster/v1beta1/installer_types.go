@@ -127,7 +127,6 @@ type Velero struct {
 }
 
 type Weave struct {
-	IPAllocRange         string `json:"IPAllocRange,omitempty"`
 	isEncryptionDisabled bool   `json:"isEncryptionDisabled,omitempty"`
 	PodCIDR              string `json:"podCIDR,omitempty"`
 	PodCIDRRange         string `json:"podCIDRRange,omitempty"`
