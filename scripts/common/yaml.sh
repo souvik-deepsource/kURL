@@ -48,7 +48,6 @@ function replace_with_variable_or_delete_line() {
     local replace_string=$2
     local bash_variable=$3
 
-
     if [ -z $bash_variable ]; then
         sed -i "/$replace_string/d" "$filename"
     else
@@ -251,7 +250,7 @@ function velero_yaml() {
     fi
 
     replace_with_true_or_false $filename "{{ veleroDisableRestic }}" "$VELERO_USE_RESTIC"
-    replace_with_true_or_false $filename "{{ veleroInstallCLI }}" "$VELERO_INSTALL_CLI"
+    replace_with_true_or_false $filename "{{ veleroDisableCLI }}" "$VELERO_DISABLE_CLI"
     replace_with_variable_or_delete_line $filename "{{ veleroLocalBucket }}" "$VELERO_LOCAL_BUCKET"
     replace_with_variable_or_delete_line $filename "{{ veleroNamespace }}" "$VELERO_NAMESPACE"
     replace_with_variable_or_delete_line $filename "{{ veleroVersion }}" "$VELERO_VERSION"

@@ -11,8 +11,8 @@ spec:
     dockerRegistryIP: {{ dockerRegistryIP }}
     hardFailOnLoopback: {{ dockerHardFailOnLoopback }}
     noCEOnEE: {{ dockerNoCEOnEE }}
-    noDocker: {{ dockerNoDocker }}
     version: {{ dockerVersion }}
+    noDocker: {{ dockerNoDocker }}
   fluentd:
     fullEFKStack: {{ fluentdFullEFKStack }}
     version: {{ fluentdVersion }}
@@ -33,7 +33,7 @@ spec:
     loadBalancerAddress: {{ kubernetesLoadBalancerAddress }}
     masterAddress: {{ kubernetesMasterAddress }}
     serviceCIDR: {{ kubernetesServiceCIDR }}
-    serviceCIDRRange: {{ kubernetesServiceCIDRRange }}
+    serviceCidrRange: {{ kubernetesServiceCIDRRange }}
     version: {{ kubernetesVersion }}
   kurl:
     HTTPProxy: {{ HTTPProxy }}
@@ -56,7 +56,7 @@ spec:
   prometheus:
     version: {{ prometheusVersion }}
   registry:
-    registryPublishPort: {{ registryPublishPort }}
+    publishPort: {{ registryPublishPort }}
     version: {{ registryVersion }}
   rook:
     cephReplicaCount: {{ rookCephReplicaCount }}
@@ -64,12 +64,12 @@ spec:
     version: {{ rookVersion }}
   velero:
     disableRestic: {{ veleroDisableRestic }}
-    installCLI: {{ veleroInstallCLI }}
+    disableCLI: {{ veleroDisableCLI }}
     localBucket: {{ veleroLocalBucket }}
     namespace: {{ veleroNamespace }}
     version: {{ veleroVersion }}
   weave:
     isEncryptionDisabled: {{ weaveisEncryptionDisabled }}
     podCIDR: {{ weavePodCIDR }}
-    podCIDRRange: {{ weavePodCIDRRange }}
+    podCidrRange: {{ weavePodCIDRRange }}
     version: {{ weaveVersion }}

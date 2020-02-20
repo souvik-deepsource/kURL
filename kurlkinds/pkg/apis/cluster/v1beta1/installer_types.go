@@ -46,8 +46,7 @@ type Docker struct {
 	DockerRegistryIP           string `json:"dockerRegistryIP,omitempty"`
 	HardFailOnLoopback         bool   `json:"hardFailOnLoopback,omitempty"`
 	NoCEOnEE                   bool   `json:"noCEOnEE,omitempty"`
-	NoDocker                   bool   `json:"noDocker,omitempty"`
-	SkipDockerPull             bool   `json:"skipDockerPull,omitempty"`
+	NoDockerPull             bool   `json: noDocker,omitempty"`
 	Version                    string `json:"version"`
 }
 
@@ -75,7 +74,7 @@ type Kubernetes struct {
 	LoadBalancerAddress string `json:"loadBalancerAddress,omitempty"`
 	MasterAddress       string `json:"masterAddress,omitempty"`
 	ServiceCIDR         string `json:"serviceCIDR,omitempty"`
-	ServiceCIDRRange    string `json:"serviceCIDRRange,omitempty"`
+	ServiceCidrRange    string `json:"serviceCidrRange,omitempty"`
 	Version             string `json:"version"`
 }
 
@@ -108,7 +107,7 @@ type Prometheus struct {
 }
 
 type Registry struct {
-	RegistryPublishPort int `json:"registryPublishPort,omitempty"`
+	publishPort int `json:"publishPort,omitempty"`
 	Version             string `json:"version"`
 }
 
@@ -120,7 +119,7 @@ type Rook struct {
 
 type Velero struct {
 	DisableRestic bool   `json:"disableRestic,omitempty"`
-	InstallCLI    bool   `json:"installCLI,omitempty"`
+	DisableCLI    bool   `json:"disableCLI,omitempty"`
 	LocalBucket   string `json:"localBucket,omitempty"`
 	Namespace     string `json:"namespace,omitempty"`
 	Version       string `json:"version"`
@@ -129,7 +128,7 @@ type Velero struct {
 type Weave struct {
 	isEncryptionDisabled bool   `json:"isEncryptionDisabled,omitempty"`
 	PodCIDR              string `json:"podCIDR,omitempty"`
-	PodCIDRRange         string `json:"podCIDRRange,omitempty"`
+	PodCidrRange         string `json:"podCidrRange,omitempty"`
 	Version              string `json:"version"`
 }
 
