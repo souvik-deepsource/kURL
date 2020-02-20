@@ -46,7 +46,7 @@ type Docker struct {
 	DockerRegistryIP           string `json:"dockerRegistryIP,omitempty"`
 	HardFailOnLoopback         bool   `json:"hardFailOnLoopback,omitempty"`
 	NoCEOnEE                   bool   `json:"noCEOnEE,omitempty"`
-	NoDockerPull             bool   `json: noDocker,omitempty"`
+	NoDocker                   bool   `json:"noDocker,omitempty"`
 	Version                    string `json:"version"`
 }
 
@@ -57,10 +57,10 @@ type Fluentd struct {
 
 type Kotsadm struct {
 	ApplicationNamespace string `json:"applicationNamespace,omitempty"`
-	ApplicationSlug       string `json:"applicationSlug,omitempty"`
-	Hostname              string `json:"hostname,omitempty"`
-	UiBindPort            int    `json:"uiBindPort,omitempty"`
-	Version               string `json:"version"`
+	ApplicationSlug      string `json:"applicationSlug,omitempty"`
+	Hostname             string `json:"hostname,omitempty"`
+	UiBindPort           int    `json:"uiBindPort,omitempty"`
+	Version              string `json:"version"`
 }
 
 type Kubernetes struct {
@@ -96,7 +96,7 @@ type Minio struct {
 }
 
 type OpenEBS struct {
-	LocalPV             bool `json:"localPV,omitempty"`
+	LocalPV             bool   `json:"localPV,omitempty"`
 	LocalPVStorageClass string `json:"localPVStorageClass,omitempty"`
 	Namespace           string `json:"namespace,omitempty"`
 	Version             string `json:"version"`
@@ -107,8 +107,8 @@ type Prometheus struct {
 }
 
 type Registry struct {
-	publishPort int `json:"publishPort,omitempty"`
-	Version             string `json:"version"`
+	publishPort int    `json:"publishPort,omitempty"`
+	Version     string `json:"version"`
 }
 
 type Rook struct {

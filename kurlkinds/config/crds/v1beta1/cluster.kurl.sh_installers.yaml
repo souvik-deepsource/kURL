@@ -52,7 +52,7 @@ spec:
                   type: boolean
                 noCEOnEE:
                   type: boolean
-                skipDockerPull:
+                noDocker:
                   type: boolean
                 version:
                   type: string
