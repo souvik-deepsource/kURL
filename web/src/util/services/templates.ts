@@ -27,6 +27,7 @@ export class Templates {
       evaluate: /{{([\s\S]+?)}}/g,
       interpolate: /{{=([\s\S]+?)}}/g,
     };
+
     this.installTmpl = _.template(fs.readFileSync(installTmplPath, "utf8"), opts);
     this.joinTmpl = _.template(fs.readFileSync(joinTmplPath, "utf8"), opts);
     this.upgradeTmpl = _.template(fs.readFileSync(upgradeTmplPath, "utf8"), opts);

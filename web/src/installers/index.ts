@@ -460,20 +460,22 @@ export class Installer {
 
     const i = this.clone();
 
-    if (_.get(i.spec, "weave.encryptNetwork")) {
-        if(i.spec.weave){
-          if (i.spec.weave.encryptNetwork == true){
+    if (i.spec.weave !== undefined) {
+        if (i.spec.weave.encryptNetwork !== undefined && i.spec.weave.isEncryptionDisabled === undefined) {
+          if (i.spec.weave.encryptNetwork === true) {
               i.spec.weave.isEncryptionDisabled = false;
           } else {
               i.spec.weave.isEncryptionDisabled = true;
           }
-          delete i.spec.weave.encryptNetwork;
+        }
+        if (i.spec.weave.encryptNetwork !== undefined){
+            delete i.spec.weave.encryptNetwork;
         }
     }
 
     if (_.get(i.spec, "weave.IPAllocRange")) {
-        if(i.spec.weave){
-          if (i.spec.weave.IPAllocRange && !i.spec.weave.podCidrRange){
+        if (i.spec.weave) {
+          if (i.spec.weave.IPAllocRange && !i.spec.weave.podCidrRange) {
               i.spec.weave.podCidrRange = i.spec.weave.IPAllocRange;
           }
           delete i.spec.weave.IPAllocRange;
@@ -481,8 +483,8 @@ export class Installer {
     }
 
     if (_.get(i.spec, "rook.storageClass")) {
-        if(i.spec.rook){
-          if (i.spec.rook.storageClass && !i.spec.rook.storageClassName){
+        if (i.spec.rook) {
+          if (i.spec.rook.storageClass && !i.spec.rook.storageClassName) {
               i.spec.rook.storageClassName = i.spec.rook.storageClass;
           }
           delete i.spec.rook.storageClass;
@@ -490,8 +492,8 @@ export class Installer {
     }
 
     if (_.get(i.spec, "rook.cephPoolReplicas")) {
-        if(i.spec.rook){
-          if (i.spec.rook.cephPoolReplicas && !i.spec.rook.cephReplicaCount){
+        if (i.spec.rook) {
+          if (i.spec.rook.cephPoolReplicas && !i.spec.rook.cephReplicaCount) {
               i.spec.rook.cephReplicaCount = i.spec.rook.cephPoolReplicas;
           }
           delete i.spec.rook.cephPoolReplicas;
