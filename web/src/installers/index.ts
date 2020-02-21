@@ -135,7 +135,7 @@ const openEBSConfigSchema = {
 
 export interface MinioConfig {
   version: string;
-  namespace: string;
+  namespace?: string;
 }
 
 const minioConfigSchema = {
@@ -163,7 +163,7 @@ const contourConfigSchema = {
 
 export interface RegistryConfig {
   version: string;
-  publishPort: number;
+  publishPort?: number;
 }
 
 const registryConfigSchema = {
@@ -227,10 +227,10 @@ const kotsadmConfigSchema = {
 
 export interface VeleroConfig {
   version: string;
-  namespace: string;
-  disableCLI: boolean;
-  disableRestic: boolean;
-  localBucket: string;
+  namespace?: string;
+  disableCLI?: boolean;
+  disableRestic?: boolean;
+  localBucket?: string;
 }
 
 const veleroConfigSchema = {
