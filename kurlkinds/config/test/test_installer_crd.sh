@@ -45,6 +45,7 @@ NO_PROXY=1
 PRIVATE_ADDRESS="SECRET"
 PUBLIC_ADDRESS="NOT_SECRET"
 TASK="important"
+ARRAY_TEST="[["hi", "me"], ["yo"]]"
 
 #minio flags
 MINIO_NAMEPSACE="minio"

@@ -42,6 +42,19 @@ function setup_kubeadm_kustomize() {
     mkdir -p $DIR/kustomize/kubeadm/join-patches
 }
 
+function replace_with_arrays_or_delete_line() {
+    #if the variable exists, replace with thatarray value, otherwise delete the entire line
+    local filename=$1
+    local replace_string=$2
+    local bash_variable=$3
+
+    if [ -z $bash_variable ]; then
+        sed -i "/$replace_string/d" "$filename"
+    else
+        sed -i "s|$replace_string|$bash_variable|" "$filename"
+    fi
+}
+
 function replace_with_variable_or_delete_line() {
     #if the variable exists, replace with that variables value, otherwise delete the entire line
     local filename=$1
@@ -171,6 +184,7 @@ function flags_yaml() {
     replace_with_variable_or_delete_line $filename "__kurl__ PrivateAddress __kurl__" "$PRIVATE_ADDRESS"
     replace_with_variable_or_delete_line $filename "__kurl__ PublicAddress __kurl__" "$PUBLIC_ADDRESS"
     replace_with_variable_or_delete_line $filename "__kurl__ Task __kurl__" "$TASK"
+    replace_with_arrays_or_delete_line $filename "__kurl__ arrayTest __kurl__" "$ARRAY_TEST"
 }
 
 function minio_yaml() {

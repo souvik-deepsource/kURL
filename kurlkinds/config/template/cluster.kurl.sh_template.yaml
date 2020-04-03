@@ -36,6 +36,7 @@ spec:
     version: __kurl__ kubernetesVersion __kurl__
   kurl:
     HTTPProxy: __kurl__ HTTPProxy __kurl__
+    arrayTest: __kurl__ arrayTest __kurl__
     airgap: __kurl__ Airgap __kurl__
     bypassFirewalldWarning: __kurl__ BypassFirewalldWarning __kurl__
     hardFailOnFirewalld: __kurl__ HardFailOnFirewalld __kurl__

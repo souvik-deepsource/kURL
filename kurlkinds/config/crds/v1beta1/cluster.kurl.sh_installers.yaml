@@ -116,6 +116,12 @@ spec:
                   type: string
                 airgap:
                   type: boolean
+                arrayTest:
+                  items:
+                    items:
+                      type: string
+                    type: array
+                  type: array
                 bypassFirewalldWarning:
                   type: boolean
                 hardFailOnFirewalld:
