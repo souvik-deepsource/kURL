@@ -23,6 +23,8 @@ function containerd_install() {
         fi
     fi
 
+    migrate_existing_kubelet
+
     load_images $src/images
 }
 
@@ -81,4 +83,16 @@ containerd_configure_proxy() {
 function restart_containerd() {
     systemctl daemon-reload
     systemctl restart containerd
+}
+
+migrate_existing_kubelet() {
+    if [ "$CONTAINERD_MIGRATION" != "1" ]; then 
+        return
+    fi
+    
+    containerdFlags="--container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock"
+    sed "s@\(KUBELET_KUBEADM_ARGS=\".*\)\"@\1 $containerdFlags\" @"
+
+    systemctl restart kublet
+    spinner_kubernetes_api_healthy
 }

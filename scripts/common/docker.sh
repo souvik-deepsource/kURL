@@ -44,6 +44,32 @@ function restart_docker() {
     systemctl restart docker
 }
 
+function uninstall_docker() {
+    if [ "$CONTAINERD_MIGRATION" != "1" ]; then
+        return
+    fi
+
+    echo "Uninstalling Docker..."
+    case "$LSB_DIST" in
+        ubuntu)
+            export DEBIAN_FRONTEND=noninteractive
+            dpkg --remove docker-ce docker-ce-cli
+            rm -rf /var/lib/docker
+            echo "Docker successfully uninstalled."
+            return 0
+            ;;
+
+        centos|rhel|amzn)
+            rpm --erase --force docker-ce docker-ce-cli
+            rm -rf /var/lib/docker
+            echo "Docker successfully uninstalled."
+            return 0
+            ;;
+    esac
+
+    printf "Docker uninstall is not supported on ${LSB_DIST} ${DIST_MAJOR}"
+}
+
 docker_install() {
    case "$LSB_DIST" in
         ubuntu)

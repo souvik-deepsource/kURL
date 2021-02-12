@@ -273,6 +273,10 @@ function outro() {
     printf "\n"
     printf "\t\t${GREEN}Installation${NC}\n"
     printf "\t\t${GREEN}  Complete ✔${NC}\n"
+
+    uninstall_docker
+    printf "\n"
+
     addon_outro
     printf "\n"
     kubeconfig_setup_outro

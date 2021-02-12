@@ -11,7 +11,27 @@ function discover() {
         echo "Docker already exists on this machine so no docker install will be performed"
     fi
 
-    if ctr --version >/dev/null 2>&1 ; then
+    # Option to upgrade from docker to containerd
+    if [ "$SKIP_DOCKER_INSTALL" = "1" ] && [ "$CONTAINERD_VERSION" ]; then  
+        printf "\n"
+        printf "${RED}WARNING: \n${NC}"
+        printf "${RED}We've detected that your system has docker installed and \n${NC} "
+        printf "${RED}you are trying to install containerd as the CRI. This script  \n${NC} "
+        printf "${RED}will attempt to migrate this node. This will force all \n${NC} "
+        printf "${RED}all pods to be rescheduled and docker will be uninstalled. \n${NC} "
+        printf "${RED}If you chose not to proceed, CRI settings will be ignored. \n${NC} "
+        printf "\n"
+        printf ""
+
+        if ! confirmN; then
+            SKIP_CONTAINERD_INSTALL=1
+            echo "Installer spec ignored. No containerd install will be performed"
+        else 
+            CONTAINERD_MIGRATION=1
+            echo "Migrating from docker to containerd"
+        fi
+
+    elif ctr --version >/dev/null 2>&1 ; then
         SKIP_CONTAINERD_INSTALL=1
         echo "Containerd already exists on this machine so no containerd install will be performed"
     fi
