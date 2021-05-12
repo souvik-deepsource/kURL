@@ -1,0 +1,13 @@
+version = 1
+
+[[analyzers]]
+name = "go"
+enabled = true
+
+  [analyzers.meta]
+  import_root = "github.com/souvik-deepsource/kURL"
+  dependencies_vendored = true
+
+[[analyzers]]
+name = "javascript"
+enabled = true
